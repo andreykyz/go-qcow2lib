@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/dypflying/go-qcow2lib/qcow2"
+	"github.com/andreykyz/go-qcow2lib/qcow2"
 )
 
 const BASE_FILE = "/tmp/base.qcow2"

@@ -32,7 +32,7 @@ import (
 	_ "net/http/pprof"
 	rpprof "runtime/pprof"
 
-	"github.com/dypflying/go-qcow2lib/cmd/subcmd"
+	"github.com/andreykyz/go-qcow2lib/cmd/subcmd"
 )
 
 var (

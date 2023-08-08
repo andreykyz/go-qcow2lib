@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dypflying/go-qcow2lib/qcow2"
+	"github.com/andreykyz/go-qcow2lib/qcow2"
 )
 
 func main() {

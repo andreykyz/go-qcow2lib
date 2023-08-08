@@ -1,4 +1,4 @@
-module github.com/dypflying/go-qcow2lib
+module github.com/andreykyz/go-qcow2lib
 
 go 1.19
 
