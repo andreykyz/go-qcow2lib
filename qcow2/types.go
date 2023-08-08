@@ -248,6 +248,40 @@ func (child *BdrvChild) GetBS() *BlockDriverState {
 	return child.bs
 }
 
+func (bs *BlockDriverState) GetInfo() *BlockInfo {
+
+	if bs.current == nil || bs.current.header == nil {
+		return nil
+	}
+	info := &BlockInfo{}
+	info.BakcingFileChain = make([]string, 0)
+	//get basic information
+	info.FileFormat = "qcow2"
+	info.VirtualSize = bs.current.header.Size
+	if fileinfo, err := os.Stat(bs.filename); err == nil {
+		info.DiskSize = uint64(fileinfo.Size())
+	}
+	info.ClusterSize = 1 << bs.current.header.ClusterBits
+	info.RefcountBits = 1 << uint16(bs.current.header.RefcountOrder)
+	info.ExtendedL2 = bs.current.header.IncompatibleFeatures&QCOW2_INCOMPAT_EXTL2 > 0
+
+	//get backing chain
+	if bs.backing != nil {
+		getBackingChain(bs.backing, &info.BakcingFileChain)
+	}
+	if has_data_file(bs) {
+		s := bs.opaque.(*BDRVQcow2State)
+		info.DataFile = s.DataFile.name
+	}
+
+	//get statistic information
+	var stat BlockStatistic
+	scanRefcountTable(bs, &stat)
+	info.Statistic = &stat
+
+	return info
+}
+
 func (bs *BlockDriverState) Info(detail bool, pretty bool) string {
 
 	if bs.current == nil || bs.current.header == nil {
